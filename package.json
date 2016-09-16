@@ -1,7 +1,7 @@
 {
-  "name": "lyonapp",
+  "name": "Borges-api",
   "version": "1.0.0",
-  "description": "Lyonapp server",
+  "description": "Borges API server",
   "main": "index.js",
   "engines": {
     "node": "5.7.1"
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://git.heroku.com/lyonapp.git"
+    "url": "https://git.heroku.com/borges-api.git"
   },
   "author": "Stepan Nikulenko",
   "license": "ISC",
