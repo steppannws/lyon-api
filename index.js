@@ -133,6 +133,16 @@ app.post('/api/user', (req, res) => {
   });
 });
 
+app.get('/api/users:token', (req, res) => {
+  var query = {accessToken: req.params.token};
+  User.findOne(query, function (err, user) {
+    if (user)
+      res.json({"status":"exist", "user":user});
+    else
+      res.json({"status":"noexist", "user":null});
+  });
+});
+
 app.get('/api/getItems', (req, res) => {
   Item.find(JSON.parse(req.query.filter), (err, items) => {
     res.send(items); 
