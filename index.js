@@ -149,3 +149,8 @@ conn.once('open', function() {
 	app.listen(port);
 	console.log('Running Borges API server on port ' + port);
 });
+
+
+var randomString = function(length) {
+    return Math.round((Math.pow(36, length + 1) - Math.random() * Math.pow(36, length))).toString(36).slice(1);
+}
