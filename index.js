@@ -92,7 +92,7 @@ router.get('/', function(req, res) {
 /*
 * Login and update users lastDateEntered
 */
-server.post('/api/login', (req, res) => {
+app.post('/api/login', (req, res) => {
   var query = {username: req.body.username};
   User.findOneAndUpdate(query, {$set:{'lastDateEntered': new Date()}},function (err, user) {
     if(user) {
@@ -112,7 +112,7 @@ server.post('/api/login', (req, res) => {
   });
 });
 
-server.post('/api/user', (req, res) => {
+app.post('/api/user', (req, res) => {
   var name = req.body.name;
   var accessToken = req.body.accessToken;
   var id = req.body.id;
@@ -139,7 +139,7 @@ server.post('/api/user', (req, res) => {
   });
 });
 
-server.get('/api/getItems', (req, res) => {
+app.get('/api/getItems', (req, res) => {
   Item.find(JSON.parse(req.query.filter), (err, items) => {
     res.send(items); 
   })
@@ -150,7 +150,7 @@ server.get('/api/getItems', (req, res) => {
 /*
 * Test methods
 */
-server.get('/api/createSuperuser', (req, res) => {
+app.get('/api/createSuperuser', (req, res) => {
   var userData = { 
     role: 'superuser',
     username: 'stepan',
@@ -167,7 +167,7 @@ server.get('/api/createSuperuser', (req, res) => {
   });
 });
 
-server.get('/api/firstItem/:id', (req, res) => {
+app.get('/api/firstItem/:id', (req, res) => {
   var query = {_id: req.params.id};
   User.findOne(query, function (err, user) {
     if (user) {
@@ -222,9 +222,9 @@ conn.once('open', function() {
   // Wait for the database connection to establish, then start the app.                         
   console.log("MongoDB connected 👌");
 
-  app.listen(PORT, 'localhost', err => {
+  app.listen(port, 'localhost', err => {
     if (err) console.log(`=> OMG!!! 🙀 ${err}`);
-    console.log(`=> 🔥  Borges API is running on port ${PORT}`);
+    console.log(`=> 🔥  Borges API is running on port ${port}`);
   });
 });
 
