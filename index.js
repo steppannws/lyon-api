@@ -86,7 +86,52 @@ router.get('/', function(req, res) {
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
-app.use('/data', router);
+app.post('/api/login', (req, res) => {
+  var query = {username: req.body.username};
+  User.findOneAndUpdate(query, {$set:{'lastDateEntered': new Date()}},function (err, user) {
+    if(user) {
+      if(user.password == req.body.password){
+        res.json({"status":"loged", "user":user});
+      }
+      else
+        res.json({"status":"badpassword", "user":{}});
+
+      // bcrypt.compare('aleph', hash, function(err, res) {
+      //     // res == true 
+      //     console.log('L🙀 G: ', res);
+      // });
+    } else {
+      res.json({"status":"noexist", "user":{}});
+    }
+  });
+});
+
+app.post('/api/user', (req, res) => {
+  var name = req.body.name;
+  var accessToken = req.body.accessToken;
+  var id = req.body.id;
+
+  var query = {id: id};
+
+  User.findOne(query, function (err, user) {
+    if (user) {
+      res.json({"status":"exist", "user":user});
+    } else {
+      var userData = { 
+        name: name,
+        accessToken: accessToken,
+        id: id
+      };
+
+      var newUser = new User(userData).save(function (err){
+        // req.session.user = userData;
+        // console.log('New user '+name+' has been created!');
+        // res.redirect('/profile');
+        res.json({"status":"created", "user":userData});
+      });
+    }
+  });
+});
 
 app.get('/api/getItems', (req, res) => {
   Item.find(JSON.parse(req.query.filter), (err, items) => {
