@@ -4,6 +4,11 @@ var bodyParser = require('body-parser');
 var fs = require('fs');
 var data = require("./data.json");
 const mongoose = require('mongoose');
+// var userController = require('./controllers/user');
+var controllers = require('./controllers');
+var User = require('./models/User');
+var Post = require('./models/Post');
+var Tag = require('./models/Tag');
 
 mongoose.connect('mongodb://borges:aleph@ds019976.mlab.com:19976/borges');
 var conn = mongoose.connection;
@@ -22,56 +27,21 @@ app.use(function (req, res, next) {
     next();
 });
 
-//Models
-// create user model 
-var User = mongoose.model('User', {
-  username: String,
-  email: String,
-  password: String,
-  dateCreated: String,
-  lastDateEntered: String,
-  posts: 0,
-  accessToken: String,
-  role: String //superuser, editor, moderator, user
-});
-
-var Item = mongoose.model('Item', {
-  owner: String,
-  type: String,
-  dateCreated: String,
-  lastTimeModified: String,
-  state: 0, //0 - created; 1 - public; 2 - deleted
-  shares:0,
-  views: 0,
-  modifiedBy: [],
-  tags: [],
-  favUsers: [],
-  references: [],
-
-  title: String,
-  subtitle: String,
-  text: String,
-  social: {
-    twitter: "",
-    facebook: "",
-    googleplus: "",
-  },
-  media: {
-    thumbnail: String,
-    video: String, 
-    audio: String,
-    images: [],
-  },
-  referenceLink: String,
-  date: String,
-});
+function db (req, res, next) {
+  req.db = {
+    User: conn.model('User', User, 'users'),
+    Post: conn.model('Post', Post, 'posts'),
+    Tag: conn.model('Tag', Tag, 'tags')
+  };
+  return next();
+}
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-var port = process.env.PORT || 8080;        // set our port
+var port = process.env.PORT || 3000;        // set our port
 
 // ROUTES FOR OUR API
 // =============================================================================
@@ -86,29 +56,10 @@ router.get('/', function(req, res) {
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
-app.post('/api/login', (req, res) => {
-  var query = {username: req.body.username};
-  User.findOneAndUpdate(query, {$set:{'lastDateEntered': new Date()}},function (err, user) {
-    if(user) {
-      if(user.password == req.body.password){
-        res.json({"status":"loged", "user":user});
-      }
-      else
-        res.json({"status":"badpassword", "user":{}});
-
-      // bcrypt.compare('aleph', hash, function(err, res) {
-      //     // res == true 
-      //     console.log('L🙀 G: ', res);
-      // });
-    } else {
-      res.json({"status":"noexist", "user":{}});
-    }
-  });
-});
 
 app.post('/api/user', (req, res) => {
   var name = req.body.name;
-  var accessToken = req.body.accessToken;
+  var access_token = req.body.access_token;
   var id = req.body.id;
 
   var query = {id: id};
@@ -119,7 +70,7 @@ app.post('/api/user', (req, res) => {
     } else {
       var userData = { 
         name: name,
-        accessToken: accessToken,
+        access_token: access_token,
         id: id
       };
 
@@ -133,8 +84,8 @@ app.post('/api/user', (req, res) => {
   });
 });
 
-app.get('/api/users/:token', (req, res) => {
-  var query = {accessToken: req.params.token};
+app.get('/api/users/:access_token', (req, res) => {
+  var query = {access_token: req.params.access_token};
   User.findOne(query, function (err, user) {
     if (user)
       res.json({"status":"exist", "user":user});
@@ -143,11 +94,30 @@ app.get('/api/users/:token', (req, res) => {
   });
 });
 
-app.get('/api/getItems', (req, res) => {
-  Item.find(JSON.parse(req.query.filter), (err, items) => {
-    res.send(items); 
-  })
-});
+// app.get('/api/getPosts', (req, res) => {
+//   var query = JSON.parse(req.query.filter) || {};
+//   Post.find(query, (err, items) => {
+//     res.send(items); 
+//   })
+// });
+
+// User
+app.get('/api/testUser', db, controllers.users.createTestUser);
+app.post('/api/loginWithToken', db, controllers.users.loginWithToken);
+app.post('/api/login', db, controllers.users.login);
+
+// Post
+app.get('/api/posts', db, controllers.posts.getPosts);
+app.post('/api/posts', db, controllers.posts.add);
+app.get('/api/posts/:id', (req, res) => {});
+app.put('/api/posts/:id', (req, res) => {});
+app.delete('/api/posts/:id', (req, res) => {});
+
+// Tags
+app.get('/api/tags', db, controllers.tags.getTags);
+app.post('/api/tags', db, controllers.tags.add);
+app.get('/api/testTag', db, controllers.tags.testTag);
+
 
 // START THE SERVER
 // =============================================================================
@@ -159,7 +129,6 @@ conn.once('open', function() {
 	app.listen(port);
 	console.log('Running Borges API server on port ' + port);
 });
-
 
 var randomString = function(length) {
     return Math.round((Math.pow(36, length + 1) - Math.random() * Math.pow(36, length))).toString(36).slice(1);

@@ -7,7 +7,7 @@
     "node": "5.7.1"
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "nodemon --watch controllers --watch models --watch index.js index.js"
   },
   "repository": {
     "type": "git",
