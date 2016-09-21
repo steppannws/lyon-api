@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var findOrCreate = require('mongoose-findorcreate')
 var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
@@ -12,6 +13,8 @@ var userSchema = new Schema({
   updated_at: Date,
   lastentered_at: Date
 });
+
+userSchema.plugin(findOrCreate);
 
 var User = mongoose.model('User', userSchema);
 

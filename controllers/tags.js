@@ -30,6 +30,10 @@ exports.add = function(req, res, next) {
   }
 };
 
+exports.addTags = function() {
+  
+};
+
 exports.testTag = function(req, res, next) {
   	var testTag = {
 		name: 'Buenos Aires'
