@@ -38,8 +38,10 @@ function db (req, res, next) {
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true, limit: '50mb'}));
+// app.use(bodyParser({limit: '50mb'}));
+// app.use(express.bodyParser({limit: '50mb'}));
+app.use(bodyParser.json({limit: '50mb'}));
 
 var port = process.env.PORT || 3000;        // set our port
 
@@ -109,9 +111,9 @@ app.post('/api/login', db, controllers.users.login);
 // Post
 app.get('/api/posts', db, controllers.posts.getPosts);
 app.post('/api/posts', db, controllers.posts.add);
-app.get('/api/posts/:id', (req, res) => {});
-app.put('/api/posts/:id', (req, res) => {});
-app.delete('/api/posts/:id', (req, res) => {});
+app.get('/api/posts/:id', db, controllers.posts.getPost);
+app.put('/api/posts/:id', db, controllers.posts.updatePost);
+app.delete('/api/posts/:id', db, controllers.posts.deletePost);
 
 // Tags
 app.get('/api/tags', db, controllers.tags.getTags);

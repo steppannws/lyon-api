@@ -13,22 +13,15 @@ var postSchema = new Schema({
 	shares_counter: { type: Number, default: 0 },
 	views_counter: { type: Number, default: 0 },
 	favorites_counter: { type: Number, default: 0 },
-
+	media: {
+		images: [{type: String, default: ''}],
+		video: { type: String, default: '' },
+		audio: { type: String, default: '' }
+	},
 	content: {
 		title: { type: String, required: true },
 		subtitle: { type: String, default: '' },
 		text: { type: String, required: true },
-		social: {
-			twitter: { type: String, default: '' },
-			facebook: { type: String, default: '' },
-			googleplus:  { type: String, default: '' }
-		},
-		media: {
-			thumbnail: {url: String, filename: String},
-			images: [{url: String, filename: String}],
-			video: { type: String, default: '' },
-			audio: { type: String, default: '' }
-		},
 		reference_link: {url: String, label: String},
 		date: { type: String, default: '' }
 	}
