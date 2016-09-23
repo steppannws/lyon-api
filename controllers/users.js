@@ -28,19 +28,35 @@ exports.loginWithToken = function(req, res, next) {
 	})
 };
 
-exports.createTestUser = function(req, res, next) {
-	var testUser = {
-		username: 'stepan',
-		password: 'stepan',
-		email: 'stepan@ilcacto.com',
+exports.createInitialUsers = function(req, res, next) {
+	var superUser = {
+		username: 'borges',
+		password: 'borgesinfinito2016!',
+		email: 'steppannws@gmail.com',
 		role: 'superuser',
-		// posts:[{type: Schema.Types.ObjectId, ref:'Post'}],
 		access_token: randomString(32), 
 		created_at: Date.now(),
-		// updated_at: Date,
 		lastentered_at: Date.now()
 	};
-	var user = new req.db.User(testUser);
+	var editor1 = {
+		username: 'sebastian',
+		password: 'borgesinfinito2016!',
+		email: 'sebsaiz@gmail.com',
+		role: 'editor',
+		access_token: randomString(32), 
+		created_at: Date.now(),
+		lastentered_at: Date.now()
+	};
+	var editor2 = {
+		username: 'julian',
+		password: 'borgesinfinito2016!',
+		email: 'ezquerrajulian@yahoo.com',
+		role: 'editor',
+		access_token: randomString(32), 
+		created_at: Date.now(),
+		lastentered_at: Date.now()
+	};
+	var user = new req.db.User(editor2);
 	user.save(function(err) {
 		if (err) next(err);
 		res.json(user);

@@ -104,7 +104,7 @@ app.get('/api/users/:access_token', (req, res) => {
 // });
 
 // User
-app.get('/api/testUser', db, controllers.users.createTestUser);
+app.get('/api/createInitialUsers', db, controllers.users.createInitialUsers);
 app.post('/api/loginWithToken', db, controllers.users.loginWithToken);
 app.post('/api/login', db, controllers.users.login);
 
