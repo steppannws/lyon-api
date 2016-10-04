@@ -10,15 +10,17 @@ exports.add = function(req, res, next) {
     var tagsToStore = [];
 
     _.map(req.body.tags, (tag) => {
-      if(tag.className != undefined) {
-        var newTag = new req.db.Tag({name: tag.label.toLowerCase(), posts:newPost._id});
-        tagsToStore.push(newTag._id);
-        newTag.save();
-      } else {
-        tagsToStore.push(tag.value);
-        // Update existing Tags
-        // WARN! without the callback method this won't update!
-        req.db.Tag.findByIdAndUpdate(tag.value, { $push: {posts:newPost._id}, $set: {updated_at: Date.now()}}, (err, tag) => {});
+      if(tag != null) {
+        if(tag.className != undefined) {
+          var newTag = new req.db.Tag({name: tag.label.toLowerCase(), posts:newPost._id});
+          tagsToStore.push(newTag._id);
+          newTag.save();
+        } else {
+          tagsToStore.push(tag.value);
+          // Update existing Tags
+          // WARN! without the callback method this won't update!
+          req.db.Tag.findByIdAndUpdate(tag.value, { $push: {posts:newPost._id}, $set: {updated_at: Date.now()}}, (err, tag) => {});
+        }
       }
     });
 
@@ -26,12 +28,14 @@ exports.add = function(req, res, next) {
       title: req.body.title,
       subtitle: req.body.subtitle,
       text: req.body.text,
-      reference_link: req.body.reference_link
+      reference_link: req.body.reference_link,
+      date: req.body.date
     };
+
+    newPost.type = req.body.type;
     newPost.media = req.body.media;
     newPost.author = req.body.user._id;
     newPost.tags = tagsToStore;
-    newPost.date = req.body.date;
     newPost.state = req.body.state;
 
     // return;
@@ -50,10 +54,16 @@ exports.add = function(req, res, next) {
 
 exports.getPosts = function(req, res, next) {
   var query = JSON.parse(req.query.filter) || {};
-  var filds = 'content state created_at views_counter favorites_counter modified_by type author';
-  req.db.Post.find(query, filds,(err, items) => {
+  var filds = 'content state created_at views_counter favorites_counter modified_by type author tags';
+
+  // Pagination
+  // req.db.Post.find(query, filds, {skip: 0, limit: 50})
+
+  req.db.Post.find(query, filds, {skip: 0, limit: 50})
+  .populate('tags')
+  .exec((err, items) => {
     res.send(items); 
-  })
+  });
 };
 
 exports.getPost = function(req, res, next) {
@@ -86,15 +96,17 @@ exports.updatePost = function(req, res, next) {
     var tagsToStore = [];
 
     _.map(req.body.tags, (tag) => {
-      if(tag.className != undefined) {
-        var newTag = new req.db.Tag({name: tag.label.toLowerCase(), posts:post._id});
-        tagsToStore.push(newTag._id);
-        newTag.save();
-      } else {
-        tagsToStore.push(tag.value);
-        // Update existing Tags
-        // WARN! without the callback method this won't update!
-        req.db.Tag.findByIdAndUpdate(tag.value, { $push: {posts:post._id}, $set: {updated_at: Date.now()}}, (err, tag) => {});
+      if(tag != null) {
+        if(tag.className != undefined) {
+          var newTag = new req.db.Tag({name: tag.label.toLowerCase(), posts:post._id});
+          tagsToStore.push(newTag._id);
+          newTag.save();
+        } else {
+          tagsToStore.push(tag.value);
+          // Update existing Tags
+          // WARN! without the callback method this won't update!
+          req.db.Tag.findByIdAndUpdate(tag.value, { $push: {posts:post._id}, $set: {updated_at: Date.now()}}, (err, tag) => {});
+        }
       }
     });
 
@@ -102,12 +114,13 @@ exports.updatePost = function(req, res, next) {
       title: req.body.title,
       subtitle: req.body.subtitle,
       text: req.body.text,
-      reference_link: req.body.reference_link
+      reference_link: req.body.reference_link,
+      date: req.body.date
     };
+    post.type = req.body.type;
     post.media = req.body.media;
     post.modified_by.push(req.body.user._id);
     post.tags = tagsToStore;
-    post.date = req.body.date;
     post.state = req.body.state;
     post.updated_at = Date.now();
 
