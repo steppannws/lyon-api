@@ -38,7 +38,6 @@ exports.add = function(req, res, next) {
     newPost.tags = tagsToStore;
     newPost.state = req.body.state;
 
-    // return;
     newPost.save((err, post) => {
       if (err) {
         console.error(err);
