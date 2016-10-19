@@ -118,8 +118,8 @@ app.delete('/api/posts/:id', db, controllers.posts.deletePost);
 // Tags
 app.get('/api/tags', db, controllers.tags.getTags);
 app.post('/api/tags', db, controllers.tags.add);
-app.get('/api/testTag', db, controllers.tags.testTag);
-
+app.put('/api/tags', db, controllers.tags.editTag);
+app.delete('/api/tags', db, controllers.tags.deleteTag);
 
 // START THE SERVER
 // =============================================================================

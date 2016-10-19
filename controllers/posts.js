@@ -12,7 +12,7 @@ exports.add = function(req, res, next) {
     _.map(req.body.tags, (tag) => {
       if(tag != null) {
         if(tag.className != undefined) {
-          var newTag = new req.db.Tag({name: tag.label.toLowerCase(), posts:newPost._id});
+          var newTag = new req.db.Tag({name: tag.label, posts:newPost._id});
           tagsToStore.push(newTag._id);
           newTag.save();
         } else {
@@ -58,8 +58,9 @@ exports.getPosts = function(req, res, next) {
   // Pagination
   // req.db.Post.find(query, filds, {skip: 0, limit: 50})
 
-  req.db.Post.find(query, filds, {skip: 0, limit: 50})
+  req.db.Post.find(query, filds, {skip: 0, limit: 100})
   .populate('tags')
+  .sort('-created_at')
   .exec((err, items) => {
     res.send(items); 
   });
@@ -97,7 +98,7 @@ exports.updatePost = function(req, res, next) {
     _.map(req.body.tags, (tag) => {
       if(tag != null) {
         if(tag.className != undefined) {
-          var newTag = new req.db.Tag({name: tag.label.toLowerCase(), posts:post._id});
+          var newTag = new req.db.Tag({name: tag.label, posts:post._id});
           tagsToStore.push(newTag._id);
           newTag.save();
         } else {

@@ -16,7 +16,7 @@ var postSchema = new Schema({
 	media: {
 		images: [{type: String, default: ''}],
 		video: { type: String, default: '' },
-		audio: { type: String, default: '' }
+		audio: { url: String, image: String}
 	},
 	content: {
 		title: { type: String, required: true },

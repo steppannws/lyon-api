@@ -30,9 +30,24 @@ exports.add = function(req, res, next) {
   }
 };
 
-exports.addTags = function() {
-  
+exports.editTag = function(req, res, next) {
+
 };
+
+exports.deleteTag = function(req, res, next) {
+  req.db.Tag.findById(req.params.id, function(err, tag) {
+    return tag.remove((err) => {
+      if(!err) {
+        req.db.Post.update({_id: {$in: tag._id}});
+      }
+    })
+    // if (err) return next(err);
+    // // TODO: remove tag from each Post
+    // post.remove();
+    // res.status(200).json(post);
+  })
+};
+
 
 exports.testTag = function(req, res, next) {
   	var testTag = {

@@ -8,7 +8,8 @@
   },
   "scripts": {
     "start": "node index.js",
-    "debug": "nodemon --watch controllers --watch models --watch index.js index.js"
+    "debug": "nodemon --watch controllers --watch models --watch index.js index.js",
+    "deploy": "git add . && git commit -am 'Borges Infinito API' && git push heroku master"
   },
   "repository": {
     "type": "git",
