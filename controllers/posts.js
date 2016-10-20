@@ -58,7 +58,7 @@ exports.getPosts = function(req, res, next) {
   // Pagination
   // req.db.Post.find(query, filds, {skip: 0, limit: 50})
 
-  req.db.Post.find(query, filds, {skip: 0, limit: 100})
+  req.db.Post.find(query, filds)//, {skip: 0, limit: 100})
   .populate('tags')
   .sort('-created_at')
   .exec((err, items) => {

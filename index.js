@@ -117,9 +117,12 @@ app.delete('/api/posts/:id', db, controllers.posts.deletePost);
 
 // Tags
 app.get('/api/tags', db, controllers.tags.getTags);
+app.get('/api/getFilteredTags', db, controllers.tags.getFilteredTags);
+app.get('/api/tag/name/:name', db, controllers.tags.getTagByName);
+app.get('/api/tag/:id', db, controllers.tags.getTagById);
 app.post('/api/tags', db, controllers.tags.add);
-app.put('/api/tags', db, controllers.tags.editTag);
-app.delete('/api/tags', db, controllers.tags.deleteTag);
+app.put('/api/tags/:id', db, controllers.tags.updateTag);
+app.delete('/api/tags/:id', db, controllers.tags.deleteTag);
 
 // START THE SERVER
 // =============================================================================
