@@ -29,8 +29,8 @@ var User = require('./models/User');
 var Post = require('./models/Post');
 var Tag = require('./models/Tag');
 
-mongoose.connect('mongodb://borges:aleph@ds019976.mlab.com:19976/borges');
-// mongoose.connect('mongodb://localhost/borges');
+// mongoose.connect('mongodb://borges:aleph@ds019976.mlab.com:19976/borges');
+mongoose.connect('mongodb://localhost/borges');
 var conn = mongoose.connection;
 
 app.use(function (req, res, next) {
