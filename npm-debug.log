@@ -1,62 +1,35 @@
 0 info it worked if it ends with ok
 1 verbose cli [ '/Users/stepan/.nvm/versions/node/v5.7.1/bin/node',
 1 verbose cli   '/Users/stepan/.nvm/versions/node/v5.7.1/bin/npm',
-1 verbose cli   'install',
-1 verbose cli   '-g',
-1 verbose cli   'nvm' ]
+1 verbose cli   'run',
+1 verbose cli   'start' ]
 2 info using npm@3.8.0
 3 info using node@v5.7.1
-4 silly loadCurrentTree Starting
-5 silly install loadCurrentTree
-6 silly install readGlobalPackageData
-7 silly fetchPackageMetaData nvm
-8 silly fetchNamedPackageData nvm
-9 silly mapToRegistry name nvm
-10 silly mapToRegistry using default registry
-11 silly mapToRegistry registry https://registry.npmjs.org/
-12 silly mapToRegistry uri https://registry.npmjs.org/nvm
-13 verbose request uri https://registry.npmjs.org/nvm
-14 verbose request no auth needed
-15 info attempt registry request try #1 at 2:13:01 PM
-16 verbose request id 3c0566657b3bfcf3
-17 http request GET https://registry.npmjs.org/nvm
-18 info retry will retry, error on last attempt: Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
-19 info attempt registry request try #2 at 2:13:41 PM
-20 http request GET https://registry.npmjs.org/nvm
-21 info retry will retry, error on last attempt: Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
-22 info attempt registry request try #3 at 2:15:11 PM
-23 http request GET https://registry.npmjs.org/nvm
-24 silly fetchPackageMetaData Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
-24 silly fetchPackageMetaData     at errnoException (dns.js:26:10)
-24 silly fetchPackageMetaData     at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:77:26)
-24 silly fetchPackageMetaData  error for nvm { [Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443]
-24 silly fetchPackageMetaData   code: 'ENOTFOUND',
-24 silly fetchPackageMetaData   errno: 'ENOTFOUND',
-24 silly fetchPackageMetaData   syscall: 'getaddrinfo',
-24 silly fetchPackageMetaData   hostname: 'registry.npmjs.org',
-24 silly fetchPackageMetaData   host: 'registry.npmjs.org',
-24 silly fetchPackageMetaData   port: 443 }
-25 silly rollbackFailedOptional Starting
-26 silly rollbackFailedOptional Finishing
-27 silly runTopLevelLifecycles Starting
-28 silly runTopLevelLifecycles Finishing
-29 silly install printInstalled
-30 verbose stack Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
-30 verbose stack     at errnoException (dns.js:26:10)
-30 verbose stack     at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:77:26)
-31 verbose cwd /Volumes/Kepler/PROJECTS/ilcacto/CLIENTS/CulturalSM/Borges/borges-api
-32 error Darwin 15.6.0
-33 error argv "/Users/stepan/.nvm/versions/node/v5.7.1/bin/node" "/Users/stepan/.nvm/versions/node/v5.7.1/bin/npm" "install" "-g" "nvm"
-34 error node v5.7.1
-35 error npm  v3.8.0
-36 error code ENOTFOUND
-37 error errno ENOTFOUND
-38 error syscall getaddrinfo
-39 error network getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
-40 error network This is most likely not a problem with npm itself
-40 error network and is related to network connectivity.
-40 error network In most cases you are behind a proxy or have bad network settings.
-40 error network
-40 error network If you are behind a proxy, please make sure that the
-40 error network 'proxy' config is set properly.  See: 'npm help config'
-41 verbose exit [ 1, true ]
+4 verbose stack Error: Failed to parse json
+4 verbose stack Unexpected token '<' at 2:1
+4 verbose stack <<<<<<< HEAD
+4 verbose stack ^
+4 verbose stack     at parseError (/Users/stepan/.nvm/versions/node/v5.7.1/lib/node_modules/npm/node_modules/read-package-json/read-json.js:379:11)
+4 verbose stack     at parseJson (/Users/stepan/.nvm/versions/node/v5.7.1/lib/node_modules/npm/node_modules/read-package-json/read-json.js:68:23)
+4 verbose stack     at /Users/stepan/.nvm/versions/node/v5.7.1/lib/node_modules/npm/node_modules/read-package-json/read-json.js:48:5
+4 verbose stack     at /Users/stepan/.nvm/versions/node/v5.7.1/lib/node_modules/npm/node_modules/graceful-fs/graceful-fs.js:78:16
+4 verbose stack     at tryToString (fs.js:414:3)
+4 verbose stack     at FSReqWrap.readFileAfterClose [as oncomplete] (fs.js:401:12)
+5 verbose cwd /Volumes/Kepler/PROJECTS/Lishu/Lyon/app/server
+6 error Darwin 15.6.0
+7 error argv "/Users/stepan/.nvm/versions/node/v5.7.1/bin/node" "/Users/stepan/.nvm/versions/node/v5.7.1/bin/npm" "run" "start"
+8 error node v5.7.1
+9 error npm  v3.8.0
+10 error file /Volumes/Kepler/PROJECTS/Lishu/Lyon/app/server/package.json
+11 error code EJSONPARSE
+12 error Failed to parse json
+12 error Unexpected token '<' at 2:1
+12 error <<<<<<< HEAD
+12 error ^
+13 error File: /Volumes/Kepler/PROJECTS/Lishu/Lyon/app/server/package.json
+14 error Failed to parse package.json data.
+14 error package.json must be actual JSON, not just JavaScript.
+14 error
+14 error This is not a bug in npm.
+14 error Tell the package author to fix their package.json file. JSON.parse
+15 verbose exit [ 1, true ]
