@@ -1,7 +1,6 @@
 [
 	{
 		"id": "0",
-<<<<<<< HEAD
 		"title": "Buffett",
 		"desc": "Long-term, value investor",
 		"percent": 50
@@ -65,16 +64,5 @@
 		"title": "Conservative",
 		"desc": "Seeks portfolio stability.",
 		"percent": 6.16
-=======
-		"title": "Test",
-		"desc": "test test",
-		"percent": "+50"
-	},
-	{
-		"id": "1",
-		"title": "Test 2",
-		"desc": "test test 2",
-		"percent": "+5"
->>>>>>> 179b712e755ca389f23d15807bf384d71927a98a
 	}
 ]

@@ -1,48 +1,26 @@
 {
-<<<<<<< HEAD
   "name": "lyonapp",
   "version": "1.0.0",
   "description": "Lyonapp server",
-=======
-  "name": "Borges-api",
-  "version": "1.0.0",
-  "description": "Borges API server",
->>>>>>> 179b712e755ca389f23d15807bf384d71927a98a
   "main": "index.js",
   "engines": {
     "node": "5.7.1"
   },
   "scripts": {
-<<<<<<< HEAD
     "start": "nodemon index.js"
   },
   "repository": {
     "type": "git",
     "url": "https://git.heroku.com/lyonapp.git"
-=======
-    "start": "node index.js",
-    "debug": "nodemon --watch controllers --watch models --watch index.js index.js",
-    "deploy": "git add . && git commit -am 'Borges Infinito API' && git push heroku master"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://git.heroku.com/borges-api.git"
->>>>>>> 179b712e755ca389f23d15807bf384d71927a98a
   },
   "author": "Stepan Nikulenko",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
-<<<<<<< HEAD
     "fs": "0.0.1-security",
     "lodash": "^4.16.4",
     "node-fetch": "^1.6.3",
     "node-schedule": "^1.2.0"
   }
 }
-=======
-    "fs": "0.0.1-security"
-  }
-}
->>>>>>> 179b712e755ca389f23d15807bf384d71927a98a
