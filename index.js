@@ -80,7 +80,7 @@ app.listen(port);
 console.log('Running server on port ' + port);
 
 // Excecute cron job every day at 00 hs.
-var cronJob = schedule.scheduleJob('0 0 0 * * *', function(){
+// var cronJob = schedule.scheduleJob('0 0 0 * * *', function(){
 
 });
 
@@ -274,7 +274,7 @@ function readDataFromFile() {
   })
 }
 
-setTimeout(getAllData, 1000);
+// setTimeout(getAllData, 1000);
 
 // var getStockData = async((opts, type) => {
 function getStockFinanceData(opts, type) {
