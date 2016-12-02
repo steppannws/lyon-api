@@ -8,9 +8,7 @@ var app        = express();                 // define our app using express
 var bodyParser = require('body-parser');
 var fs       = require('fs');
 var fetch      = require('node-fetch');
-
-// "node-schedule": "^1.2.0"
-// var schedule   = require('node-schedule');
+var schedule   = require('node-schedule');
 
 var dataFileName = 'd.json';
 var data = [];
@@ -53,8 +51,6 @@ router.get('/stock/:id', (req, res) => {
 
 });
 
-// process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
-
 router.get('/etf/:id', (req, res) => {
   var r = res;
   var data = [];
@@ -63,7 +59,7 @@ router.get('/etf/:id', (req, res) => {
   .then((res) => {
     r.json(res);
   })
-  .catch((err) => {r.json(err)});
+  .catch((err) => {r.json('ERROR' + err)});
   // fetch('http://ondemand.websol.barchart.com/getETFDetails.json?symbols=SPY&categories=Equity&subCategories=Global')
   // fetch('https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22%22)&format=json&bypass=true&diagnostics=false&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=')
   
@@ -82,7 +78,7 @@ app.listen(port);
 console.log('Running server on port ' + port);
 
 // Excecute cron job every day at 00 hs.
-// var cronJob = schedule.scheduleJob('0 0 0 * * *', function(){
+var cronJob = schedule.scheduleJob('0 0 0 * * *', function(){
 
 });
 
@@ -95,7 +91,7 @@ function getAllData() {
   .then((res) => {
     // console.log('SPY: ', res);
   })
-  .catch((err) => {console.log(err)});
+  .catch((err) => {console.log('ERROR', err)});
 
   return;
   // fetch('https://query2.finance.yahoo.com/v10/finance/quoteSummary/AAPL?formatted=true&crumb=pFqE0Ejwwqf&lang=en-US&modules=topHoldings%2CdefaultKeyStatistics%2CassetProfile%2Cask')
@@ -126,7 +122,7 @@ function getAllData() {
 var getETFData = async((symbol) => {
   var data = {};
   var etf = await(
-    fetch('http://query2.finance.yahoo.com/v10/finance/quoteSummary/'+symbol+'?formatted=true&crumb=pFqE0Ejwwqf&lang=en-US&modules=topHoldings%2CdefaultKeyStatistics%2CassetProfile%2CfinancialData%2CincomeStatementHistory%2CbalanceSheetHistory')
+    fetch('https://query2.finance.yahoo.com/v10/finance/quoteSummary/'+symbol+'?formatted=true&crumb=pFqE0Ejwwqf&lang=en-US&modules=topHoldings%2CdefaultKeyStatistics%2CassetProfile%2CfinancialData%2CincomeStatementHistory%2CbalanceSheetHistory')
     .then((res) => {return res.json();})
     .then((json) => {
       return json.quoteSummary.result[0];
@@ -276,7 +272,7 @@ function readDataFromFile() {
   })
 }
 
-// setTimeout(getAllData, 1000);
+setTimeout(getAllData, 1000);
 
 // var getStockData = async((opts, type) => {
 function getStockFinanceData(opts, type) {
