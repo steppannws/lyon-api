@@ -1,0 +1,78 @@
+{
+   "status":{
+      "code":200,
+      "message":"Success."
+   },
+   "results":[
+      {
+         "symbol":"AAPL",
+         "exchange":"NASDAQ",
+         "exchangeName":"Apple Inc",
+         "sicSector":"3571",
+         "industry":"Computer",
+         "subIndustry":"Mini",
+         "indexMembership":[
+            "$DOWC",
+            "$DOWI",
+            "$IUXX",
+            "$RUI",
+            "$RUA",
+            "$SPX"
+         ],
+         "businessSummary":"Apple Inc. is engaged in designing manufacturing and marketing mobile communication and media devices personal computers and portable digital music players. The Company\u0027s products and services include iPhone iPad Mac iPod Apple TV a portfolio of consumer and professional software applications the iOS and Mac OS X operating systems iCloud and a range of accessory service and support offerings. It sells its products worldwide through its online stores its retail stores its direct sales force third-party wholesalers and resellers. Apple Inc. is headquartered in Cupertino California.",
+         "ceo":"Timothy D. Cook",
+         "qtrOneEarnings":1.67,
+         "qtrOneEarningsDate":"2016-10-25",
+         "qtrTwoEarnings":1.42,
+         "qtrTwoEarningsDate":"2016-07-26",
+         "qtrThreeEarnings":1.9,
+         "qtrThreeEarningsDate":"2016-04-26",
+         "qtrFourEarnings":3.28,
+         "qtrFourEarningsDate":"2016-01-26",
+         "peRatio":"13.3",
+         "epsGrowth":"9.650000",
+         "recentEarnings":"1.67",
+         "annualEPS":"8.27",
+         "address":"ONE INFINITE LOOP",
+         "city":"CUPERTINO",
+         "state":"CA",
+         "zipCode":"95014",
+         "phoneNumber":"408-996-1010"
+      },
+      {
+         "symbol":"MSFT",
+         "exchange":"NASDAQ",
+         "exchangeName":"Microsoft Corp",
+         "sicSector":"7372",
+         "industry":"Computer",
+         "subIndustry":"Software",
+         "indexMembership":[
+            "$DOWC",
+            "$DOWI",
+            "$IUXX",
+            "$RUI",
+            "$RUA",
+            "$SPX"
+         ],
+         "businessSummary":"Microsoft is a technology company. Their products include operating systems for computing devices servers phones and other intelligent devices; server applications for distributed computing environments; cross-device productivity applications; business solution applications; desktop and server management tools; software development tools; video games; and online advertising. They also design and sell hardware including PCs tablets gaming and entertainment consoles phones other intelligent devices and related accessories. They offer cloud-based solutions that provide customers with software services platforms and content. They also provide consulting and product and solution support services and they train and certify computer system integrators and developers.",
+         "ceo":"Satya Nadella",
+         "qtrOneEarnings":0.76,
+         "qtrOneEarningsDate":"2016-10-20",
+         "qtrTwoEarnings":0.69,
+         "qtrTwoEarningsDate":"2016-07-19",
+         "qtrThreeEarnings":0.62,
+         "qtrThreeEarningsDate":"2016-04-21",
+         "qtrFourEarnings":0.78,
+         "qtrFourEarningsDate":"2016-01-28",
+         "peRatio":"21.28",
+         "epsGrowth":"4.660000",
+         "recentEarnings":"0.76",
+         "annualEPS":"2.85",
+         "address":"ONE MICROSOFT WAY",
+         "city":"REDMOND",
+         "state":"WA",
+         "zipCode":"98052",
+         "phoneNumber":"425-882-8080"
+      }
+   ]
+}

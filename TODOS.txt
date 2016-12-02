@@ -1,0 +1,28 @@
+- Definir las ETF's a mostrar
+- Definir estructura de datos para ETF's
+- Definir estructura de datos para Stocks
+- Admin para Stocks
+- Ver la migracion con Google. (Firebase)
+- Precios historicos (historical data) 1, 3 y 5 años (La columna de precio: adjClose) ESTA DATA ESTA EN PROFILE
+- Porcentual de la ganancia de data historica
+- Precios (ASK and BIND)
+
+Info del stock:
+- sharesOutstanding
+
+Info del ETF:
+- totalAssets ("fmt":"194.65B") - 
+
+
+
+
+API:
+Yahoo Finance Informacion economica: 
+http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20IN%20(%22AAPL%22)&format=json&env=http://datatables.org/alltables.env
+
+Yahoo Finance Historical Data: 
+https://developer.yahoo.com/yql/console/?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20%28%22YHOO%22,%22AAPL%22,%22GOOG%22,%22MSFT%22%29%0A%09%09&env=http://datatables.org/alltables.env#h=select%20*%20from%20yahoo.finance.historicaldata%20where%20symbol%20in%20%28%22YHOO%22,%22AAPL%22,%22GOOG%22,%22MSFT%22%29%20and%20startDate%20=%20%222012-01-01%22%20and%20endDate%20=%20%222012-01-08%22%0D%0A%09%09
+
+Yahoo Fincance ETF y Profile: 
+https://query2.finance.yahoo.com/v10/finance/quoteSummary/SPY?formatted=true&crumb=pFqE0Ejwwqf&lang=en-US&modules=topHoldings%2CdefaultKeyStatistics%2CassetProfile
+

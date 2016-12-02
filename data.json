@@ -1,68 +1,10 @@
 [
 	{
 		"id": "0",
-		"title": "Buffett",
+		"title": "SPY",
+		"type": "etf",
+		"symbol": "SPY",
 		"desc": "Long-term, value investor",
 		"percent": 50
-	},
-	{
-		"id": "1",
-		"title": "Tech",
-		"desc": "Tech will dominate the next decade.",
-		"percent": -5
-	},
-	{
-		"id": "2",
-		"title": "Real Estate",
-		"desc": "Invests in ofice buildings, hotelss and other properties.",
-		"percent": 11.23
-	},
-	{
-		"id": "3",
-		"title": "Growth",
-		"desc": "Seeks long-term growth.",
-		"percent": 11.03
-	},
-	{
-		"id": "4",
-		"title": "Tapper",
-		"desc": "Invests growth companies.",
-		"percent": 9.94
-	},
-	{
-		"id": "5",
-		"title": "Loeb",
-		"desc": "Billionaire activist investor.",
-		"percent": 9.60
-	},
-	{
-		"id": "6",
-		"title": "S&P 500",
-		"desc": "Top 500 companies in the US.",
-		"percent": 9.15
-	},
-	{
-		"id": "7",
-		"title": "Elon Musk",
-		"desc": "Change the world through sustainable energy.",
-		"percent": 7.98
-	},
-	{
-		"id": "8",
-		"title": "IBLN",
-		"desc": "Top 30 in Billionaires Portfolios.",
-		"percent": 6.99
-	},
-	{
-		"id": "9",
-		"title": "Ackman",
-		"desc": "A concentrated strategy.",
-		"percent": 6.18
-	},
-	{
-		"id": "10",
-		"title": "Conservative",
-		"desc": "Seeks portfolio stability.",
-		"percent": 6.16
 	}
 ]

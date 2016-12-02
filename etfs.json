@@ -1,0 +1,84 @@
+[
+	{
+		"symbol":"SPY",
+        "name":"SPDR S\u0026P 500 ETF",
+        "fundFamily":"State Street Global Advisors",
+        "description":"The objective of the SPDR S\u0026P 500 ETF is to provide investment results that, before expenses, generally correspond to the price and yield performance of the S\u0026P 500 Index. The S\u0026P 500 Index is a float-adjusted capitalization weighted index of 500 securities calculated under the auspices of the S\u0026P Index Committee of S\u0026P. Periodically, S\u0026P may determine that total shares outstanding have changed in one or more component Index Securities due to secondary offerings, repurchases, conversions or other corporate actions. Second, periodically S\u0026P may determine that the available float shares of one or more of the Index Securities may have changed due to corporate actions, purchases or sales of securities by holders or other events.",
+        "assetClass":"Equity",
+        "sector":"Large Cap",
+        "leverage":"Long",
+        "ask": xxx, // PRECIO
+        "bid": xxx, // PRECIO DE VENTA
+        "standardDeviation":8.53,
+        "annualDividend":4.42,
+        "annualDividendYield":2.02,
+        "latestDividend":1.082,
+        "netAssetValue":218.95,
+        "peRatio":17.73,
+        "OneyearReturn":4.79,
+        "ThreeyearReturn":20.85,
+        "FiveyearReturn":87.81,
+        "TenyearReturn":55.48,
+        "totalHoldings":"508",
+        "topHoldings": [
+        	{
+				"symbol":"AAPL",
+				"exchange":"NASDAQ",
+				"exchangeName":"Apple Inc",
+				"ask": xxx, // PRECIO
+        		"bid": xxx, // PRECIO DE VENTA
+				"percent":3.13,
+				"sicSector":"3571",
+				"industry":"Computer", // UNIFICAR
+				"subIndustry":"Mini",
+				"businessSummary":"Apple Inc. is engaged in designing manufacturing and marketing mobile communication and media devices personal computers and portable digital music players. The Company\u0027s products and services include iPhone iPad Mac iPod Apple TV a portfolio of consumer and professional software applications the iOS and Mac OS X operating systems iCloud and a range of accessory service and support offerings. It sells its products worldwide through its online stores its retail stores its direct sales force third-party wholesalers and resellers. Apple Inc. is headquartered in Cupertino California.",
+				"ceo":"Timothy D. Cook",
+				"qtrOneEarnings":1.67,
+				"qtrOneEarningsDate":"2016-10-25",
+				"qtrTwoEarnings":1.42,
+				"qtrTwoEarningsDate":"2016-07-26",
+				"qtrThreeEarnings":1.9,
+				"qtrThreeEarningsDate":"2016-04-26",
+				"qtrFourEarnings":3.28,
+				"qtrFourEarningsDate":"2016-01-26",
+				"peRatio":"13.3",
+				"epsGrowth":"9.650000",
+				"recentEarnings":"1.67",
+				"annualEPS":"8.27",
+				"address":"ONE INFINITE LOOP",
+				"city":"CUPERTINO",
+				"state":"CA",
+				"zipCode":"95014",
+				"phoneNumber":"408-996-1010"
+        	},
+        	{
+				"symbol":"MSFT",
+				"exchange":"NASDAQ",
+				"exchangeName":"Microsoft Corp",
+				"percent":3.13,
+				"sicSector":"7372",
+				"industry":"Computer",
+				"subIndustry":"Software",
+				"businessSummary":"Microsoft is a technology company. Their products include operating systems for computing devices servers phones and other intelligent devices; server applications for distributed computing environments; cross-device productivity applications; business solution applications; desktop and server management tools; software development tools; video games; and online advertising. They also design and sell hardware including PCs tablets gaming and entertainment consoles phones other intelligent devices and related accessories. They offer cloud-based solutions that provide customers with software services platforms and content. They also provide consulting and product and solution support services and they train and certify computer system integrators and developers.",
+				"ceo":"Satya Nadella",
+				"qtrOneEarnings":0.76,
+				"qtrOneEarningsDate":"2016-10-20",
+				"qtrTwoEarnings":0.69,
+				"qtrTwoEarningsDate":"2016-07-19",
+				"qtrThreeEarnings":0.62,
+				"qtrThreeEarningsDate":"2016-04-21",
+				"qtrFourEarnings":0.78,
+				"qtrFourEarningsDate":"2016-01-28",
+				"peRatio":"21.28",
+				"epsGrowth":"4.660000",
+				"recentEarnings":"0.76",
+				"annualEPS":"2.85",
+				"address":"ONE MICROSOFT WAY",
+				"city":"REDMOND",
+				"state":"WA",
+				"zipCode":"98052",
+				"phoneNumber":"425-882-8080"
+        	}
+        ]
+	}
+]
