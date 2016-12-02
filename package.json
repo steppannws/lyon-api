@@ -22,6 +22,8 @@
     "fs": "0.0.1-security",
     "lodash": "^4.16.4",
     "node-fetch": "^1.6.3",
-    "node-schedule": "^1.2.0"
+    "node-schedule": "^1.2.0",
+    "bluebird": "^3.4.6",
+    "asyncawait": "^1.0.6"
   }
 }
