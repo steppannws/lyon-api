@@ -8,7 +8,9 @@ var app        = express();                 // define our app using express
 var bodyParser = require('body-parser');
 var fs       = require('fs');
 var fetch      = require('node-fetch');
-var schedule   = require('node-schedule');
+
+// "node-schedule": "^1.2.0"
+// var schedule   = require('node-schedule');
 
 var dataFileName = 'd.json';
 var data = [];
