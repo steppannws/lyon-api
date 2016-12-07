@@ -13,6 +13,92 @@ Info del stock:
 Info del ETF:
 - totalAssets ("fmt":"194.65B") - 
 
+--------------------------------------------
+--------------------------------------------
+
+06/12/2016
+-------------
+
+*** Strategies:
+- Cell del strategie Rendimiento del fiveYearAverageReturn
+
+-------------
+
+- Strategie details: 
+	* La misma cabecera que en iBillionair con ese grafico y que el fiveYearAverageReturn cambia depende del periodo seleccionado
+
+-------------
+
+- Grafico como en iBillionair
+
+-------------
+
+- About
+
+-------------
+- Funamentals (que no diga eso): tiene que quedar como iBillionair
+
+ETF:
+BID | ASK
+Dividend Yeld% | Net Assets
+PE Ratio (si es null = 0) | Risk Profile (manual: Growth|Concervative|Moderate)
+
+Source (manual: )
+
+Net Assets = Total Asset 
+
+Stock:
+BID | ASK
+Dividend Yeld% |  Market Cap
+PE Ratio
+
+Market Cap = Share outstanding * ASK o BID
+
+-------------
+
+- Top 10 Holdings (como titulo en ETF)
+	* Holdings | Weight % | 1Y Return (Titulos de header como en iBillionair)
+	* Muestro 10 holdings y agrego un "View all" como en iBillionair
+	* Show more muestra toda la lista de los holdings. Eso lo pasan los chicos, hay que integrar a la API
+
+-------------
+
+- Sectors diversification
+	* Torta como en iBillionair pero entero con la info abajo
+
+-------------
+
+- Disclousure (Boton que abre pop-up con legales)
+
+-------------
+
+- Boton "Invest Now" cambiar a color dorado y titulo en blanco y ponerlo al lado de la fleta de volver.
+
+-------------
+
+*** Demo:
+
+-------------
+
+- Sacar el logo.
+
+-------------
+
+*** 
+- Menu
+	* Invertir los colores 
+	* Orden: Open Account | Trader Go | Strategy | Demo
+	* Logo de Open Account esta en Screen Shots (Persona con un mas, como agregar usuario)
+
+***
+- Open Account | Trader Go
+	* Loader que carga Trader go y Open Account va como una pagina con una frase y foto y funde al contenido. 
+
+====================================
+
+Conseguir datos:
+
+- PERatio para Stocks: http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20IN%20(%22aapl%22)&format=json&env=http://datatables.org/alltables.env
 
 
 
