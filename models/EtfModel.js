@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var postSchema = new Schema({
+var EtfSchema = new Schema({
 	author: {type: Schema.Types.ObjectId, ref:'User'},
 	type: { type: String, default: 'text' },
 	state: { type: String, default: 'draft', index: true }, //draft, published, archived
@@ -27,6 +27,6 @@ var postSchema = new Schema({
 	}
 });
 
-var Post = mongoose.model('Post', postSchema);
+var EtfModel = mongoose.model('Etf', EtfSchema);
 
-module.exports = Post;
+module.exports = EtfModel;

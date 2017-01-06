@@ -3,12 +3,15 @@ var async = require('asyncawait/async');
 var await = require('asyncawait/await');
 var Promise = require('bluebird');
 var _        = require('lodash');
+var moment = require('moment');
 var express    = require('express');        // call express
 var app        = express();                 // define our app using express
 var bodyParser = require('body-parser');
 var fs       = require('fs');
 var fetch      = require('node-fetch');
 var schedule   = require('node-schedule');
+var EtfModel = require('./models/EtfModel');
+var StockModel = require('./models/StockModel');
 
 var dataFileName = 'd.json';
 var data = [];
@@ -63,6 +66,62 @@ router.get('/etf/:id', (req, res) => {
   // fetch('http://ondemand.websol.barchart.com/getETFDetails.json?symbols=SPY&categories=Equity&subCategories=Global')
   // fetch('https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22%22)&format=json&bypass=true&diagnostics=false&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=')
   
+});
+
+function getDateFormat(d) { 
+  var date = d;
+  var day = date.getDate();
+  var monthIndex = date.getMonth() + 1;
+  var year = date.getFullYear();
+
+  return String(year + '-' + monthIndex + '-' + day);
+}
+
+router.get('/history/:id/:period', (req, res) => {
+  var r = res;
+  var data = [];
+
+  var date = {};
+
+  switch(req.params.period) {
+    case '1D':
+      date.startDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
+      break;
+    case '5D':
+      date.startDate = moment().subtract(5, 'days').format('YYYY-MM-DD');
+      break;
+    case '1W':
+      date.startDate = moment().subtract(7, 'days').format('YYYY-MM-DD');
+      break;
+    case '1M':
+      date.startDate = moment().subtract(30, 'days').format('YYYY-MM-DD');
+      break;
+    case '3M':
+      date.startDate = moment().subtract(3, 'months').format('YYYY-MM-DD');
+      break;
+    case '6M':
+      date.startDate = moment().subtract(6, 'months').format('YYYY-MM-DD');
+      break;
+    case '1Y':
+      date.startDate = moment().subtract(12, 'months').format('YYYY-MM-DD');
+      break;
+    case '2Y':
+      date.startDate = moment().subtract(2, 'years').format('YYYY-MM-DD');
+      break;
+    case '5Y':
+      date.startDate = moment().subtract(5, 'years').format('YYYY-MM-DD');
+      break;
+  }
+
+  date.endDate = moment().format('YYYY-MM-DD');
+
+  console.log(date);
+
+  getHistoricalData(req.params.id, date)
+  .then((res) => {
+    r.json(res);
+  })
+  .catch((err) => {r.json('ERROR' + err)});
 });
 
 
@@ -121,6 +180,7 @@ function getAllData() {
 
 var getETFData = async((symbol) => {
   var data = {};
+
   var etf = await(
     fetch('https://query2.finance.yahoo.com/v10/finance/quoteSummary/'+symbol+'?formatted=true&crumb=pFqE0Ejwwqf&lang=en-US&modules=topHoldings%2CdefaultKeyStatistics%2CassetProfile%2CfinancialData%2CincomeStatementHistory%2CbalanceSheetHistory')
     .then((res) => {return res.json();})
@@ -274,8 +334,32 @@ function readDataFromFile() {
 
 setTimeout(getAllData, 1000);
 
-// var getStockData = async((opts, type) => {
-function getStockFinanceData(opts, type) {
+var getHistoricalData = async((id, date) => {
+  var data = {};
+  histData = [];
+
+  // var url = 'http://query.yahooapis.com/v1/public/yql?q=select * from yahoo.finance.historicaldata where symbol = "YHOO" and startDate = "2014-02-11" and endDate = "2014-02-18"&diagnostics=true&env=store://datatables.org/alltableswithkeys';
+  var url = 'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.historicaldata%20where%20symbol%20%3D%20%22'+id+'%22%20and%20startDate%20%3D%20%22'+date.startDate+'%22%20and%20endDate%20%3D%20%22'+date.endDate+'%22&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys';//&callback=';
+  var historicalData = await(
+    fetch(url)
+    .then((res) => {return res.json()})
+    .then((json) => {return json.query.results.quote;})
+  );
+
+  for(var i = 0; i < historicalData.length; i++) {
+    var period = [];
+    period.push(Number(historicalData[i].Open));
+    period.push(Number(historicalData[i].Close));
+    histData.push(period);
+  }
+
+  data.data = histData;
+
+  return data;
+});
+
+var getHistoricalData2 = async((opts, type) => {
+// function getStockFinanceData(opts, type) {
   var defs = {
     baseURL: 'http://query.yahooapis.com/v1/public/yql?q=',
     query: {
@@ -309,5 +393,5 @@ function getStockFinanceData(opts, type) {
     var url = defs.baseURL + query + (defs.suffixURL[type] || '');
   console.log('URLURL',url);
   return fetch(url);
-};
+});
 
