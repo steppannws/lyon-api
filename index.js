@@ -10,6 +10,7 @@ var bodyParser = require('body-parser');
 var fs       = require('fs');
 var fetch      = require('node-fetch');
 var schedule   = require('node-schedule');
+var utf8 = require('utf8');
 var EtfModel = require('./models/EtfModel');
 var StockModel = require('./models/StockModel');
 
@@ -34,53 +35,66 @@ router.get('/test', (req, res) => {
 
 router.get('/strategies', (req, res) => {
   var r = res;
-  var data = [];
 
   fs.readFile('data.json', 'utf8', (err, d) => {
     if(!err)
       r.json(JSON.parse(d))
   })
-
-  
 });
     
 router.get('/stock/:id', (req, res) => {
   var r = res;
-  var data = [];
     
   getStockData(req.params.id)
-  .then((res) => {r.json(res)})
-  .catch((err) =>{r.json({error: err});});
+  .then((res) => { r.json(res) })
+  .catch((err) => { r.json({error: err}); });
 
 });
 
 router.get('/etf/:id', (req, res) => {
   var r = res;
-  var data = [];
 
   getETFData(req.params.id)
-  .then((res) => {
-    r.json(res);
-  })
-  .catch((err) => {r.json('ERROR' + err)});
-  // fetch('http://ondemand.websol.barchart.com/getETFDetails.json?symbols=SPY&categories=Equity&subCategories=Global')
-  // fetch('https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22%22)&format=json&bypass=true&diagnostics=false&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=')
-  
+  .then((res) => { r.json(res); })
+  .catch((err) => { r.json('ERROR' + err) });
 });
 
-function getDateFormat(d) { 
-  var date = d;
-  var day = date.getDate();
-  var monthIndex = date.getMonth() + 1;
-  var year = date.getFullYear();
+router.get('/stock13f/:symbol/:id', (req, res) => {
+  var r = res;
+  var stockData = {};
+  var holdingsData = {};
 
-  return String(year + '-' + monthIndex + '-' + day);
-}
+  getStock13F(req.params.id, req.params.symbol)
+  .then((res) => {r.json(res);})
+  .catch((err) => { r.json({error: err}); });
+
+  /*
+  getStockData(req.params.symbol)
+  .then((res) => {
+    stockData = res;
+
+    get13F(req.params.id)
+    .then((res) => {
+      var sectorsIndustries = [];
+
+      sectorsIndustries = res.holdings.map((item) => {
+        return {name: item.industry, raw: item.current_percent_of_portfolio, fmt: item.current_percent_of_portfolio};
+      });
+
+      stockData.sectorsIndustries = sectorsIndustries;
+
+      r.json(stockData);
+
+    })
+    .catch((err) => { r.json({error: err}); });
+
+  })
+  .catch((err) => { r.json({error: err}); });
+  */
+});
 
 router.get('/history/:id/:period', (req, res) => {
   var r = res;
-  var data = [];
-
   var date = {};
 
   switch(req.params.period) {
@@ -115,13 +129,18 @@ router.get('/history/:id/:period', (req, res) => {
 
   date.endDate = moment().format('YYYY-MM-DD');
 
-  console.log(date);
-
   getHistoricalData(req.params.id, date)
   .then((res) => {
     r.json(res);
   })
   .catch((err) => {r.json('ERROR' + err)});
+});
+
+router.get('/13f/:id', (req, res) => {
+  var r = res;
+  get13F(req.params.id)
+  .then((res) => { r.json(res); })
+  .catch((err) => { r.json('ERROR ' + err)});
 });
 
 
@@ -143,39 +162,21 @@ var cronJob = schedule.scheduleJob('0 0 0 * * *', function(){
 
 function getAllData() {
   console.log('GETTING DATA');
-
+  
   return;
 
-  getETFData('SPY')
-  .then((res) => {
-    // console.log('SPY: ', res);
+  var data = {};
+
+  fs.readFile('data.json', 'utf8', (err, d) => {
+    if(!err) {
+      data = JSON.parse(d);
+      data.map((item) => {
+        if(item.wid)
+          console.log(item.wid);
+      })
+    }
   })
-  .catch((err) => {console.log('ERROR', err)});
-
-  return;
-  // fetch('https://query2.finance.yahoo.com/v10/finance/quoteSummary/AAPL?formatted=true&crumb=pFqE0Ejwwqf&lang=en-US&modules=topHoldings%2CdefaultKeyStatistics%2CassetProfile%2Cask')
-  fetch('https://query2.finance.yahoo.com/v10/finance/quoteSummary/AAPL?formatted=true&crumb=pFqE0Ejwwqf&lang=en-US&modules=topHoldings%2CdefaultKeyStatistics%2CassetProfile%2CfinancialData%2CincomeStatementHistory%2CbalanceSheetHistory') //%2C
-  .then((res) => {
-    console.log(res);
-        return res.json();
-    }).then((json) => {
-    // data.push(json);
-        // return r.json(json.quoteSummary.result[0].topHoldings.holdings);
-        // console.log(json.quoteSummary.result[0].topHoldings.holdings);
-        
-        // console.log(json.quoteSummary.result[0].incomeStatementHistory);
-        
-        console.log(json.quoteSummary.result[0]);
-
-        // fs.writeFile(dataFileName, JSON.stringify(json, null, 4));
-        // var d = JSON.parse(json);
-
-    // console.log('DATA', d.quoteSummary);
-        // console.log(_.get(json, 'quoteSummary'));
-        // return r.json(data);
-    });
-
-    setTimeout(readDataFromFile , 1000);
+  // setTimeout(readDataFromFile , 1000);
 }
 
 var getETFData = async((symbol) => {
@@ -200,23 +201,6 @@ var getETFData = async((symbol) => {
 
   for(var holding of topHoldings) {
 
-    /*
-    // Industry
-    var holdingData = await(
-      fetch('https://query2.finance.yahoo.com/v10/finance/quoteSummary/'+holding.symbol+'?formatted=true&crumb=pFqE0Ejwwqf&lang=en-US&modules=topHoldings%2CdefaultKeyStatistics%2CassetProfile%2CfinancialData%2CincomeStatementHistory%2CbalanceSheetHistory')
-      .then((res) => {return res.json()})
-      .then((json) => {
-        if(json.quoteSummary.result != null)
-          return json.quoteSummary.result[0];
-        else
-          return {};
-      })
-    );
-
-    if(holdingData.assetProfile != undefined)
-      holding.industry = holdingData.assetProfile.industry;
-    */
-
     var holdingData2 = await(
       fetch('http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20IN%20(%22'+holding.symbol+'%22)&format=json&env=http://datatables.org/alltables.env')
       .then((res) => {return res.json()})
@@ -228,18 +212,10 @@ var getETFData = async((symbol) => {
     // console.log(holdingData);
   }
 
-  // var stockInfo = await(
-  //   getStockData({stock: symbol}, 'quotes')
-  //   .then((response) => {return response.json();})
-  //   .then((json) => {return json.query.results.quote;})
-  //   .catch((error) => {return error;})
-  // );
-
   var sectorsIndustries = [];
 
   for(var industries in etf.topHoldings.sectorWeightings) {
     for(var industry in etf.topHoldings.sectorWeightings[industries]) {
-      // console.log(etf.topHoldings.sectorWeightings[industries][industry].raw);
       sectorsIndustries.push({
         name: industry,
         raw: etf.topHoldings.sectorWeightings[industries][industry].raw,
@@ -253,7 +229,7 @@ var getETFData = async((symbol) => {
 
   data.profile.name = etfFinance.Name;
   data.profile.symbol = etfFinance.Symbol;
-  data.profile.summery = etf.assetProfile.longBusinessSummary;
+  data.profile.summery = utf8.decode(etf.assetProfile.longBusinessSummary.replace("\n ", "\n\n"));
   
   data.finance.ask = etfFinance.Ask;
   data.finance.bid = etfFinance.Bid;
@@ -278,13 +254,13 @@ var getStockData = async((id) => {
   var data = {};
 
   var stockInfo = await(
-    fetch('http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20IN%20(%22'+id+'%22)&format=json&env=http://datatables.org/alltables.env')
+    fetch('https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20IN%20(%22'+id+'%22)&format=json&env=http://datatables.org/alltables.env')
     .then((res) => {return res.json()})
     .then((json) => {return json.query.results.quote;})
   );
 
   var stockFinance = await(
-    fetch('https://query2.finance.yahoo.com/v10/finance/quoteSummary/'+id+'?formatted=true&crumb=pFqE0Ejwwqf&lang=en-US&modules=topHoldings%2CdefaultKeyStatistics%2CassetProfile%2CfinancialData%2CincomeStatementHistory%2CbalanceSheetHistory')
+    fetch('https://query2.finance.yahoo.com/v10/finance/quoteSummary/'+id+'?f=y&formatted=true&crumb=n&lang=en-US&modules=topHoldings%2CdefaultKeyStatistics%2CassetProfile%2CfinancialData%2CincomeStatementHistory%2CbalanceSheetHistory')
     .then((res) => {return res.json();})
     .then((json) => {return json.quoteSummary.result[0];})
   );
@@ -297,15 +273,16 @@ var getStockData = async((id) => {
   data.profile.industry = stockFinance['assetProfile'].industry;
   data.profile.sector = stockFinance['assetProfile'].sector;
   data.profile.summery = stockFinance['assetProfile'].longBusinessSummary;
-
+  
   data.finance.ask = stockInfo.Ask;
   data.finance.bid = stockInfo.Bid;
+  data.finance.yield = stockInfo.DividendYield;
+  data.finance.marketCap = stockInfo.MarketCapitalization;
   data.finance.sharesOutstanding = stockFinance.defaultKeyStatistics.sharesOutstanding;
+  data.finance.peRatio = stockInfo.PERatio;
   data.finance.pegRatio = stockFinance.defaultKeyStatistics.pegRatio;
   data.finance.enterpriseValue = stockFinance.defaultKeyStatistics.enterpriseValue;
   data.finance.forwardPE = stockFinance.defaultKeyStatistics.forwardPE;
-
-
   data.finance.totalCash = stockFinance.financialData.totalCash;
   data.finance.totalRevenue = stockFinance.financialData.totalRevenue;
   data.finance.revenueGrowth = stockFinance.financialData.revenueGrowth;
@@ -314,31 +291,144 @@ var getStockData = async((id) => {
   data.finance.targetLowPrice = stockFinance.financialData.targetLowPrice;
   data.finance.returnOnAssets = stockFinance.financialData.returnOnAssets;
 
-  // delete stockFinance['balanceSheetHistory'];
-  // delete stockFinance['assetProfile'];
-  // delete stockFinance['defaultKeyStatistics'];
-  // delete stockFinance['incomeStatementHistory'];
-  // delete stockFinance['financialData'];
-
-  // return stockFinance.defaultKeyStatistics;
   return data;
 });
 
+var get13F = async((id) => {
+  var api_key = 'IzHSnnbUgHWxBgwNeEKg';
+  var auth = 'Basic ' + new Buffer('web@lyon-is.com:Lyon280314').toString('base64');
+  var url = 'https://whalewisdom.com/shell/command.json?args=';
+  var options = {
+    method: 'GET',
+    headers: { 'Authorization': auth },
+  };
 
-function readDataFromFile() {
-  fs.readFile(dataFileName, 'utf8', (err, d) => {
-    if(!err)
-      data = JSON.parse(d);
-  })
-}
+  //349 - BERKSHIRE HATHAWAY INC
 
-setTimeout(getAllData, 1000);
+  var getId = await(
+  //   fetch(url + JSON.stringify(command), options)
+  //   .then((res) => {return res.json()})
+  //   .then((json) => {return json})
+  );
+
+  var command = {
+    "command": "holdings",
+    "filer_ids": [id],
+    "columns": [3,4,8,10,18,19,20],
+    "sort": "current_ranking",
+    "include_13d": 1
+  };
+
+  var whaleApi = await(
+    fetch(url + JSON.stringify(command), options)
+    .then((res) => {return res.json()})
+    .then((json) => {return json.results[0].records[0]})
+  );
+
+  var totalPercent = 0;
+
+  // for(var holding in whaleApi) {
+    // if(whaleApi[holding].current_percent_of_portfolio != null)
+    //   totalPercent += whaleApi[holding].current_percent_of_portfolio
+      // console.log(whaleApi[holding]);
+  // }
+
+  // totalPercent = Math.round(totalPercent);
+
+  return whaleApi;
+
+});
+
+var getStock13F = async((id, symbol) => {
+
+  var data = {};
+  var sectorsIndustries = [];
+
+  var stockInfo = await(
+    fetch('https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20IN%20(%22'+symbol+'%22)&format=json&env=http://datatables.org/alltables.env')
+    .then((res) => {return res.json()})
+    .then((json) => {return json.query.results.quote;})
+  );
+
+  var stockFinance = await(
+    fetch('https://query2.finance.yahoo.com/v10/finance/quoteSummary/'+symbol+'?f=y&formatted=true&crumb=n&lang=en-US&modules=topHoldings%2CdefaultKeyStatistics%2CassetProfile%2CfinancialData%2CincomeStatementHistory%2CbalanceSheetHistory')
+    .then((res) => {return res.json();})
+    .then((json) => {return json.quoteSummary.result[0];})
+  );
+
+  data.profile = {};
+  data.finance = {};
+
+  var get13fData = await(
+    get13F(id)
+    .then((res) => {return res})
+    .catch((err) => { return err })
+  );
+
+
+   // Top holdings
+  var topHoldings = _.map(get13fData.holdings, (h) => {return {symbol:h.stock_ticker, name: h.stock_name, percent: h.current_percent_of_portfolio}});
+  sectorsIndustries = get13fData.holdings.map((item) => {
+    return {name: item.industry, raw: item.current_percent_of_portfolio, fmt: item.current_percent_of_portfolio};
+  });
+
+  // console.log(get13fData.holdings);
+
+  /*
+      stock_name": "General Electric Co",
+      "stock_ticker": "GE",
+      "current_ranking": 33,
+      "current_percent_of_portfolio": 0.2435,
+      "sector": "INDUSTRIALS",
+      "industry": "CONGLOMERATES",
+      "percent_ownership": "0.1128604"
+  */
+
+  // for(var holding of topHoldings) {
+  //   var holdingData2 = await(
+  //     fetch('http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20IN%20(%22'+holding.symbol+'%22)&format=json&env=http://datatables.org/alltables.env')
+  //     .then((res) => {return res.json()})
+  //     .then((json) => {return json.query.results.quote;})
+  //   );
+  //   holding.ask = holdingData2.Ask;
+  //   holding.bid = holdingData2.Bid;
+
+  //   // console.log(holdingData);
+  // }
+  
+  data.finance = {};
+  data.profile = {};
+
+  data.profile.name = stockInfo.Name;
+  data.profile.symbol = stockInfo.Symbol;
+  data.profile.summery = stockFinance['assetProfile'].longBusinessSummary;//utf8.decode(etf.assetProfile.longBusinessSummary.replace("\n ", "\n\n"));
+  
+  data.finance.ask = stockInfo.Ask;
+  data.finance.bid = stockInfo.Bid;
+  data.finance.yield = stockInfo.DividendYield;
+  data.finance.marketCap = stockInfo.MarketCapitalization;
+  data.finance.sharesOutstanding = stockFinance.defaultKeyStatistics.sharesOutstanding;
+  data.finance.peRatio = stockInfo.PERatio;
+  data.finance.pegRatio = stockFinance.defaultKeyStatistics.pegRatio;
+  data.finance.enterpriseValue = stockFinance.defaultKeyStatistics.enterpriseValue;
+  data.finance.forwardPE = stockFinance.defaultKeyStatistics.forwardPE;
+  data.finance.totalCash = stockFinance.financialData.totalCash;
+  data.finance.totalRevenue = stockFinance.financialData.totalRevenue;
+  data.finance.revenueGrowth = stockFinance.financialData.revenueGrowth;
+  data.finance.currentPrice = stockFinance.financialData.currentPrice;
+  data.finance.targetHighPrice = stockFinance.financialData.targetHighPrice;
+  data.finance.targetLowPrice = stockFinance.financialData.targetLowPrice;
+  data.finance.returnOnAssets = stockFinance.financialData.returnOnAssets;
+  data.sectorsIndustries = sectorsIndustries;
+  data.topHoldings = topHoldings;
+
+  return data;
+});
 
 var getHistoricalData = async((id, date) => {
   var data = {};
   histData = [];
 
-  // var url = 'http://query.yahooapis.com/v1/public/yql?q=select * from yahoo.finance.historicaldata where symbol = "YHOO" and startDate = "2014-02-11" and endDate = "2014-02-18"&diagnostics=true&env=store://datatables.org/alltableswithkeys';
   var url = 'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.historicaldata%20where%20symbol%20%3D%20%22'+id+'%22%20and%20startDate%20%3D%20%22'+date.startDate+'%22%20and%20endDate%20%3D%20%22'+date.endDate+'%22&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys';//&callback=';
   var historicalData = await(
     fetch(url)
@@ -394,4 +484,15 @@ var getHistoricalData2 = async((opts, type) => {
   console.log('URLURL',url);
   return fetch(url);
 });
+
+
+
+function readDataFromFile() {
+  fs.readFile(dataFileName, 'utf8', (err, d) => {
+    if(!err)
+      data = JSON.parse(d);
+  })
+}
+
+setTimeout(getAllData, 1000);
 

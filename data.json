@@ -1,10 +1,20 @@
 [
 	{
 		"id": "0",
+		"wid": "",
 		"title": "SPY",
 		"type": "etf",
 		"symbol": "SPY",
 		"desc": "Long-term, value investor",
 		"percent": 14.36
+	},
+	{
+		"id": "1",
+		"wid": "349",
+		"title": "Buffet",
+		"type": "13f",
+		"symbol": "brk-b",
+		"desc": "",
+		"percent": 18.42
 	}
 ]
